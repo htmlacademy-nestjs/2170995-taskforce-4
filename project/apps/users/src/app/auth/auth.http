@@ -1,0 +1,39 @@
+# Users
+@hostname = http://localhost
+@port = 3001
+@host = {{hostname}}:{{port}}
+@parentPath = api/auth
+@userId = b6b11e86-e5e4-4ee7-a0e5-41730b7671cc
+@contentType = application/json
+
+# Create a new user
+POST {{host}}/{{parentPath}}/register HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "name": "Bobininskiy Bob",
+  "email": "user@mail.ru",
+  "city": "Москва",
+  "password": "qwerty",
+  "role": "executor",
+  "avatar": "https://images/avatarka.jpeg",
+  "dateOfBirth": "1991-01-01"
+}
+
+###
+
+# Get user by ID
+GET {{host}}/{{parentPath}}/{{userId}} HTTP/1.1
+
+###
+
+# Login user by email and password
+POST {{host}}/{{parentPath}}/login HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "email": "user@mail.ru",
+  "password": "qwerty"
+}
+
+###

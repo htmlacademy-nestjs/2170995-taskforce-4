@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger/dist';
-import { UserCity, UserRole } from '@project/shared/app-types';
+import { City, UserRole } from '@project/shared/app-types';
 
 export class CreateUserDTO {
   @ApiProperty({
@@ -18,7 +18,7 @@ export class CreateUserDTO {
     description: 'One city from the list',
     example: 'Москва'
   })
-  public city: UserCity;
+  public city: City;
 
   @ApiProperty({
     description: 'User password',

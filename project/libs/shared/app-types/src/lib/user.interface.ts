@@ -1,11 +1,11 @@
 import { UserRole } from './user-role.enum';
-import { UserCity } from './user-city.enum';
+import { City } from './city.enum';
 
 export interface User {
   _id?: string;
   name: string;
   email: string;
-  city: UserCity;
+  city: City;
   passwordHash: string;
   role: UserRole;
   avatar?: string;

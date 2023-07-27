@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { UserCity, UserRole } from '@project/shared/app-types';
+import { City, UserRole } from '@project/shared/app-types';
 
 export class UserRdo {
   @ApiProperty({
@@ -29,7 +29,7 @@ export class UserRdo {
     example: 'Москва'
   })
   @Expose()
-  public city: UserCity;
+  public city: City;
 
   @ApiProperty({
     description: 'Customer or executor',

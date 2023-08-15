@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { City } from '@project/shared/app-types';
+import { City, TaskStatus } from '@project/shared/app-types';
 
-export class CreateTaskDTO {
+export class CreateTaskDto {
   @ApiProperty({
     description: 'Task title',
     example: 'Fix door'
@@ -14,11 +14,7 @@ export class CreateTaskDTO {
   })
   public description: string;
 
-  @ApiProperty({
-    description: 'Task category',
-    example: 'Fix'
-  })
-  public category: string;
+  public categories: number[];
 
   @ApiProperty({
     description: 'The cost of the task',
@@ -55,4 +51,22 @@ export class CreateTaskDTO {
     example: 'Moscow'
   })
   public city: City;
+
+  @ApiProperty({
+    description: 'Date the task was created',
+    example: '2023-08-18'
+  })
+  public createdAt: Date;
+
+  @ApiProperty({
+    description: 'One status from the list',
+    example: 'New'
+  })
+  public status: TaskStatus;
+
+  @ApiProperty({
+    description: 'The uniq user ID',
+    example: 'b6b11e86-e5e4-4ee7-a0e5-41730b7671cc'
+  })
+  public userId: string;
 }

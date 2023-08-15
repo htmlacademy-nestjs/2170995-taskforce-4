@@ -1,66 +1,54 @@
-import { Task } from '@project/shared/app-types';
-import { City, TaskStatus } from '@project/shared/app-types';
+import { Category, Task, City, TaskStatus, Tag, Response, Comment } from '@project/shared/app-types';
+import { Entity } from '@project/util/util-types';
 
-export class TaskEntity implements Task {
-  public _id?: string;
+export class TaskEntity implements Entity<TaskEntity>, Task {
+  public id?: number;
   public title: string;
   public description: string;
-  public category: string;
+  public categories: Category[];
   public price?: number;
   public dueDate?: Date;
   public image?: string;
   public address?: string;
-  public tags?: string[];
-  public city: City;
+  public tags?: Tag[];
+  public city: string;
   public createdAt: Date;
   public updatedAt?: Date;
-  public status: TaskStatus;
+  public status: string;
   public userId: string;
-  public responses?: string[];
-  public comments?: string[];
+  public responses?: Response[];
+  public comments?: Comment[];
 
   constructor(task: Task) {
     this.fillEntity(task);
   }
 
-  public toObject() {
-    return {
-    _id: this._id,
-    title: this.title,
-    description: this.description,
-    category: this.category,
-    price: this.price,
-    dueDate: this.dueDate,
-    image: this.image,
-    address: this.address,
-    tags: this.tags,
-    city: this.city,
-    createdAt: this.createdAt,
-    updatedAt: this.updatedAt,
-    status: this.status,
-    userId: this.userId,
-    responses: this.responses,
-    comments: this.comments,
-    }
+  public fillEntity(entity: Task): void {
+    this.title = entity.title;
+    this.description = entity.description;
+    this.categories = [...entity.categories];
+    this.price = entity.price;
+    this.dueDate = entity.dueDate;
+    this.image = entity.image;
+    this.address = entity.address;
+    this.tags = [];
+    this.city = entity.city;
+    this.createdAt = entity.createdAt;
+    this.updatedAt = entity.updatedAt;
+    this.status = entity.status;
+    this.userId = entity.userId;
+    this.responses = [];
+    this.comments = [];
   }
 
-  public fillEntity(task: Task) {
-    this._id = task._id;
-    this.title = task.title;
-    this.description = task.description;
-    this.category = task.category;
-    this.price = task.price;
-    this.dueDate = task.dueDate;
-    this.image = task.image;
-    this.address = task.address;
-    this.tags = task.tags;
-    this.city = task.city;
-    this.createdAt = task.createdAt;
-    this.updatedAt = task.updatedAt;
-    this.status = task.status;
-    this.userId = task.userId;
-    this.responses = task.responses;
-    this.comments = task.comments;
+  public toObject() {
+    return {
+      ...this,
+      categories: [...this.categories],
+      comments: [...this.comments],
+      tags: [...this.tags],
+      responses: [...this.responses],
+    };
   }
 }
 

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { City, TaskStatus } from '@project/shared/app-types';
 
-export class UpdateTaskDTO {
+export class UpdateTaskDto {
   @ApiProperty({
     description: 'Task title',
     example: 'Fix door'

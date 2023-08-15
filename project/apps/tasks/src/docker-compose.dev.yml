@@ -1,0 +1,46 @@
+version: '3.5'
+services:
+  taskforce.tasks.postgres:
+    image: postgres:14-alpine
+    container_name: taskforce.tasks.postgres
+
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: qwerty
+      POSTGRES_DB: taskforce-tasks
+
+    ports:
+      - 5432:5432
+
+    volumes:
+      - taskforce.postgres.tasks:/var/lib/postgresql/data
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U admin -d qwerty" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+    networks:
+      - taskforce.tasks
+
+  taskforce.task.pgadmin:
+    image: dpage/pgadmin4
+    container_name: taskforce.task.pgadmin
+    ports:
+      - 8082:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@mail.ru"
+      PGADMIN_DEFAULT_PASSWORD: "qwerty"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+
+    networks:
+      - taskforce.tasks
+
+volumes:
+  taskforce.postgres.tasks:
+
+networks:
+  taskforce.tasks:
+    driver: bridge

@@ -1,21 +1,20 @@
-import { TaskStatus } from './task-status.enum';
-import { City } from './city.enum';
+import {  Tag, Category, TaskStatus, City, Comment, Response  } from '../index'
 
 export interface Task {
-  _id?: string;
+  id?: number;
   title: string;
   description: string;
-  category: string;
+  categories: Category[];
   price?: number;
   dueDate?: Date;
   image?: string;
   address?: string;
-  tags?: string[];
-  city: City;
+  tags?: Tag[];
+  city: string;
   createdAt: Date;
   updatedAt?: Date;
-  status: TaskStatus;
+  status: string;
   userId: string;
-  responses?: string[];
-  comments?: string[];
+  responses?: Response[];
+  comments?: Comment[];
 }

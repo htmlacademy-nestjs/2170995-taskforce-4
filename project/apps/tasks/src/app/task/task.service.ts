@@ -1,28 +1,38 @@
+import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskEntity } from './task.entity';
-import { TaskStatus } from '@project/shared/app-types';
-import { CreateTaskDTO } from './dto/create-task.dto';
-import { TaskMemoryRepository } from './task-memory.repository';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { TaskRepository } from './task.repository';
+import { TaskCategoryRepository } from '../task-category/task-category.repository';
 import { Injectable } from '@nestjs/common';
-import dayjs from 'dayjs';
+import { Task } from '@project/shared/app-types';
+
 
 @Injectable()
 export class TaskService {
   constructor(
-    private readonly taskMemoryRepository: TaskMemoryRepository
+    private readonly taskRepository: TaskRepository,
+    private readonly taskCategoryRepository: TaskCategoryRepository
   ) {}
 
-  public async createTask(dto: CreateTaskDTO) {
-    const task = { ...dto, status: TaskStatus.New, userId: '', createdAt: dayjs(Date()).toDate()};
-    const taskEntity = await new TaskEntity(task);
-
-    return this.taskMemoryRepository.create(taskEntity)
+  async createTask(dto: CreateTaskDto): Promise<Task> {
+    const categories = await this.taskCategoryRepository.find(dto.categories);
+    const taskEntity = new TaskEntity({ ...dto, categories, comments: [], tags: [], });
+    return this.taskRepository.create(taskEntity);
   }
 
-  public async getTask(id: string) {
-    return this.taskMemoryRepository.findById(id);
+  async getTask(id: number): Promise<Task> {
+    return this.taskRepository.findById(id);
   }
 
-  public async deleteTask(id: string) {
-    return this.taskMemoryRepository.destroy(id);
+  async deleteTask(id: number) {
+    return this.taskRepository.destroy(id);
+  }
+
+  async getTasks(): Promise<Task[]> {
+    return this.taskRepository.find();
+  }
+
+  async updateTask(_id: number, _dto:UpdateTaskDto): Promise<Task> {
+    throw new Error('Not implemented...');
   }
 }

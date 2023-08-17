@@ -4,7 +4,7 @@
 @host = {{hostname}}:{{port}}
 @parentPath = api/tasks
 @taskId = 1
-@deleteTaskId = 4
+@deleteTaskId = 2
 @contentType = application/json
 
 # Create a new task

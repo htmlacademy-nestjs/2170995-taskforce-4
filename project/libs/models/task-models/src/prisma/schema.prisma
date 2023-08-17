@@ -16,16 +16,15 @@ model Task {
   title       String     @default("")
   description String     @default("")
   categories  Category[]
-  categoryId  Int        @map("category_id")
   price       Int?       @default(0)
   dueDate     DateTime?  @map("due_date")
   image       String?    @default("")
   address     String?    @default("")
   tags        Tag[]
-  city        City
+  city        String
   createdAt   DateTime   @default(now()) @map("create_at")
   updatedAt   DateTime   @updatedAt @map("update_at")
-  status      TaskStatus
+  status      String
   userId      String?    @map("user_id")
   responses   Response[]
   comments    Comment[]
@@ -75,18 +74,4 @@ model Response {
   updatedAt  DateTime @updatedAt @map("updated_at")
 
   @@map("responses")
-}
-
-enum City {
-  Moscow
-  SPB
-  Vladivostok
-}
-
-enum TaskStatus {
-  New
-  Cancelled
-  AtWork
-  Completed
-  Failed
 }

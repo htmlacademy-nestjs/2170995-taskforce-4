@@ -14,7 +14,6 @@ async function fillDb() {
           title: 'Сломать'
         },
       },
-      categoryId: 1,
       price: 2000,
       dueDate: new Date('2023-01-16'),
       address: '',

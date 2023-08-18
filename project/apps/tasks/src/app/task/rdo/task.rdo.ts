@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { City, TaskStatus } from '@project/shared/app-types';
+import { City, TaskStatus, Category } from '@project/shared/app-types';
 import { Expose } from 'class-transformer';
 
-export class TaskRDO {
+export class TaskRdo {
   @ApiProperty({
     description: 'The uniq task ID',
     example: 'b6b11e86-e5e4-4ee7-a0e5-41730b7671cc'
@@ -29,7 +29,7 @@ export class TaskRDO {
     example: 'Fix'
   })
   @Expose()
-  public category: string;
+  public categories: Category[];
 
   @ApiProperty({
     description: 'The cost of the task',

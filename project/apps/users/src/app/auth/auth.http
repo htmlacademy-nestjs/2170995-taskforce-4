@@ -3,7 +3,8 @@
 @port = 3001
 @host = {{hostname}}:{{port}}
 @parentPath = api/auth
-@userId = b6b11e86-e5e4-4ee7-a0e5-41730b7671cc
+@userId = 64e10ec5824dba06873f428a
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGUxMGVjNTgyNGRiYTA2ODczZjQyOGEiLCJlbWFpbCI6InVzZXJAbWFpbC5ydSIsInJvbGUiOiJjdXN0b21lciIsIm5hbWUiOiJCb2Jpbmluc2tpeSBCb2IiLCJpYXQiOjE2OTI0NzA5OTYsImV4cCI6MTY5MjczMDE5Nn0.hrC7a3eBKiA1f_PMiGoY_YhbXXk4pjh_3MW2KU6cr7c
 @contentType = application/json
 
 # Create a new user
@@ -24,6 +25,7 @@ Content-Type: {{contentType}}
 
 # Get user by ID
 GET {{host}}/{{parentPath}}/{{userId}} HTTP/1.1
+Authorization: Bearer {{token}}
 
 ###
 

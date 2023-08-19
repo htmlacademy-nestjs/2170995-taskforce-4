@@ -1,3 +1,3 @@
-export class updateCategoryDto {
+export class UpdateCategoryDto {
   public title: string;
 }

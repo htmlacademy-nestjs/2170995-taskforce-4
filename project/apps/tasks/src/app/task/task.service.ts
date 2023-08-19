@@ -1,3 +1,4 @@
+import { TaskQuery } from './query/task.query';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskEntity } from './task.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -28,8 +29,8 @@ export class TaskService {
     return this.taskRepository.destroy(id);
   }
 
-  async getTasks(): Promise<Task[]> {
-    return this.taskRepository.find();
+  async getTasks(query: TaskQuery): Promise<Task[]> {
+    return this.taskRepository.find(query);
   }
 
   async updateTask(_id: number, _dto:UpdateTaskDto): Promise<Task> {

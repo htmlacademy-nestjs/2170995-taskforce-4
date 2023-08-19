@@ -2,29 +2,24 @@ import { TaskUserRepository } from './../task-user/task-user.repository';
 import { LoginUserDTO } from './dto/login-user.dto';
 import { TaskUserEntity } from './../task-user/task-user.entity';
 import { AUTH_USER_EXISTS, AUTH_USER_NOT_FOUND, AUTH_USER_PASSWORD_WRONG } from './auth.constant';
-import { Injectable, Inject, ConflictException, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDTO } from './dto/create-user.dto';
 import dayjs from 'dayjs';
-import { ConfigType } from '@nestjs/config'
-import { dbConfig } from '@project/config/config-users';
+import {  TokenPayload, User, UserRole  } from '@project/shared/app-types';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly taskUserRepository: TaskUserRepository,
-
-    @Inject(dbConfig.KEY)
-    private readonly databaseConfig: ConfigType<typeof dbConfig>
-  ) {
-    console.log(databaseConfig.host);
-    console.log(databaseConfig.user);
-  }
+    private readonly jwtService: JwtService,
+  ) {}
 
   public async register(dto: CreateUserDTO) {
-    const { name, email, city, password, role, dateOfBirth  } = dto;
+    const { name, email, city, password, dateOfBirth  } = dto;
 
     const taskUser = {
-      name, email, city, role, avatar: '',
+      name, email, city, role: UserRole.Customer, avatar: '',
       dateOfBirth:dayjs(dateOfBirth).toDate(), passwordHash: ''
     }
 
@@ -57,5 +52,18 @@ export class AuthService {
 
   public async getUser(id: string) {
     return this.taskUserRepository.findById(id);
+  }
+
+  public async createUserToken(user: User) {
+    const payload: TokenPayload = {
+      sub: user._id,
+      email: user.email,
+      role: user.role,
+      name: user.name,
+    };
+
+    return {
+      accessToken: await this.jwtService.signAsync(payload),
+    }
   }
 }

@@ -3,6 +3,7 @@
 @port = 3001
 @host = {{hostname}}:{{port}}
 @parentPath = api/tasks
+@filtresPath = api/tasks?sortDirection=desc&categories=1&tags=1&limit=2&page=1
 @taskId = 1
 @deleteTaskId = 2
 @contentType = application/json
@@ -13,11 +14,11 @@ Content-Type: {{contentType}}
 
 {
   "title": "Новаое задание",
-  "description": "Забить гвоздь",
+  "description": "Починить кран",
   "price": 100,
   "image": "https://images/picture.jpeg",
   "address": "Задний проход",
-  "tags": [1],
+  "tags": [0],
   "city": "Москва",
   "categories": [1],
   "responses": [1],
@@ -41,6 +42,11 @@ Content-Type: {{contentType}}
 
 # Get all tasks
 GET {{host}}/{{parentPath}}/ HTTP/1.1
+
+###
+
+# Get all tasks and filtres
+GET {{host}}/{{filtresPath}}/ HTTP/1.1
 
 ###
 

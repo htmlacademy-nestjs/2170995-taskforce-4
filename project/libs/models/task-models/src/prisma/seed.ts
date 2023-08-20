@@ -7,19 +7,26 @@ async function fillDb() {
     where: {  taskId: 1 },
     update: {},
     create: {
-      title: 'Сломать стену',
-      description: 'Сломать кирпичную стену',
+      title: 'Течет кран',
+      description: 'Необходимо починить кран',
       categories: {
         create: {
-          title: 'Сломать'
+          title: 'Ремонт'
         },
       },
       price: 2000,
-      dueDate: new Date('2023-01-16'),
-      address: '',
-      tags: {},
+      dueDate: new Date('2023-01-31'),
+      address: 'ПМ, 18',
+      tags: {
+        create: [
+          {
+            text: 'Сломать',
+            userId: '30',
+          }
+        ]
+      },
       city: 'Moscow',
-      userId: '23',
+      userId: '30',
       status: 'New',
       responses: {},
       comments: {}

@@ -5,8 +5,8 @@ import { TaskService } from './task.service';
 import { ApiResponse } from '@nestjs/swagger/dist';
 import { ApiTags } from '@nestjs/swagger';
 import { fillObject } from '@project/util/util-core';
-import { Body, Post, Get, Param, Controller, Delete, HttpStatus, HttpCode, Patch } from '@nestjs/common';
-
+import { Body, Post, Get, Param, Controller, Delete, HttpStatus, HttpCode, Patch, Query } from '@nestjs/common';
+import { TaskQuery } from './query/task.query';
 @ApiTags('tasks')
 @Controller('tasks')
 export class TaskController {
@@ -20,9 +20,8 @@ export class TaskController {
     description: 'Task found'
   })
   @Get('/:id')
-  async show(@Param('id') id: string) {
-    const taskId = parseInt(id, 10);
-    const task = await this.taskService.getTask(taskId);
+  async show(@Param('id') id: number) {
+    const task = await this.taskService.getTask(id);
     return fillObject(TaskRdo, task);
   }
 
@@ -32,8 +31,8 @@ export class TaskController {
     description: 'Tasks found'
   })
   @Get('/')
-  async index() {
-    const tasks = await this.taskService.getTasks();
+  async index(@Query() query: TaskQuery) {
+    const tasks = await this.taskService.getTasks(query);
     return fillObject(TaskRdo, tasks);
   }
 
@@ -54,9 +53,8 @@ export class TaskController {
   })
   @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async destroy(@Param('id') id: string) {
-    const taskId = parseInt(id, 10);
-    this.taskService.deleteTask(taskId);
+  async destroy(@Param('id') id: number) {
+    this.taskService.deleteTask(id);
   }
 
   @ApiResponse({
@@ -65,9 +63,8 @@ export class TaskController {
     description: 'The task has been successfully updated'
   })
   @Patch('/:id')
-  async update(@Param('id') id: string, @Body() dto: UpdateTaskDto) {
-    const taskId = parseInt(id, 10);
-    const updateTask = await this.taskService.updateTask(taskId, dto);
+  async update(@Param('id') id: number, @Body() dto: UpdateTaskDto) {
+    const updateTask = await this.taskService.updateTask(id, dto);
     return fillObject(TaskRdo, updateTask);
   }
 }

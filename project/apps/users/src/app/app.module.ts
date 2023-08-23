@@ -1,3 +1,4 @@
+import { NotifyModule } from './notify/notify.module';
 import { ConfigUserModule, getMongooseOptions } from '@project/config/config-users';
 import { Module } from '@nestjs/common';
 import { TaskUserModule } from './task-user/task-user.module';
@@ -9,6 +10,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     TaskUserModule,
     AuthModule,
     ConfigUserModule,
+    NotifyModule,
     MongooseModule.forRootAsync(
       getMongooseOptions()
     )],

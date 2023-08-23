@@ -9,12 +9,14 @@ import { UserRdo } from './rdo/user.rdo';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiResponse } from '@nestjs/swagger/dist';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { NotifyService } from '../notify/notify.service';
 
 @ApiTags('authentication')
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly notifyService: NotifyService
   ) {}
 
   @ApiResponse({
@@ -24,6 +26,8 @@ export class AuthController {
   @Post('register')
   public async create(@Body() dto: CreateUserDTO) {
     const newUser = await this.authService.register(dto);
+    const { email, name } = newUser;
+    await this.notifyService.registerSubscriber({ email, name })
     return fillObject(UserRdo, newUser);
   }
 

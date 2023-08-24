@@ -10,3 +10,5 @@ export * from './lib/tag.interface';
 export * from './lib/response.interface';
 export * from './lib/file.inrterface';
 export * from './lib/token-payload.interface';
+export * from './lib/subscriber.interface';
+export * from './lib/rabbit-routing.enum';

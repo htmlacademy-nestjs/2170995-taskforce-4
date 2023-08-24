@@ -4,7 +4,8 @@
 @host = {{hostname}}:{{port}}
 @parentPath = api/auth
 @userId = 64e10ec5824dba06873f428a
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGUxMGVjNTgyNGRiYTA2ODczZjQyOGEiLCJlbWFpbCI6InVzZXJAbWFpbC5ydSIsInJvbGUiOiJjdXN0b21lciIsIm5hbWUiOiJCb2Jpbmluc2tpeSBCb2IiLCJpYXQiOjE2OTI0NzA5OTYsImV4cCI6MTY5MjczMDE5Nn0.hrC7a3eBKiA1f_PMiGoY_YhbXXk4pjh_3MW2KU6cr7c
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU3Yzg1OGFkMmUwYjA1ODExY2Q0Y2IiLCJlbWFpbCI6InVzZXJAbWFpbC5ydSIsInJvbGUiOiJjdXN0b21lciIsIm5hbWUiOiJCb2Jpbmluc2tpeSBCb2IiLCJpYXQiOjE2OTI5MTE3MTYsImV4cCI6MTY5MzE3MDkxNn0.rsstiv9I-ArptlaDhHz6nEY-O_O9jRa2-SzkG4p8qOI
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU3Yzg1OGFkMmUwYjA1ODExY2Q0Y2IiLCJlbWFpbCI6InVzZXJAbWFpbC5ydSIsInJvbGUiOiJjdXN0b21lciIsIm5hbWUiOiJCb2Jpbmluc2tpeSBCb2IiLCJ0b2tlbklkIjoiYTAwMmQyMmYtZTBhMi00NjQ1LThjNzItZDVhY2UzMTczNTJhIiwiaWF0IjoxNjkyOTExNzE2LCJleHAiOjE2OTU1MDM3MTZ9.TNY3Jzm4Js-qdULBaGgmyfr4NGKFtucys7cKEeit0Lw
 @contentType = application/json
 
 # Create a new user
@@ -25,7 +26,7 @@ Content-Type: {{contentType}}
 
 # Get user by ID
 GET {{host}}/{{parentPath}}/{{userId}} HTTP/1.1
-Authorization: Bearer {{token}}
+Authorization: Bearer {{accessToken}}
 
 ###
 
@@ -37,5 +38,11 @@ Content-Type: {{contentType}}
   "email": "user@mail.ru",
   "password": "qwerty"
 }
+
+###
+
+# Get new JWT pair
+POST {{host}}/{{parentPath}}/refresh HTTP/1.1
+Authorization: Bearer {{refreshToken}}
 
 ###

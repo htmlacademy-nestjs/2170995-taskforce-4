@@ -1,3 +1,4 @@
+import { RequestWithTokenPayload } from '@project/shared/app-types';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { RequestWithUser } from '@project/shared/app-types';
 import { LocalAuthGuard } from './guards/local-auth.guard';
@@ -70,5 +71,11 @@ export class AuthController {
   })
   public async refreshToken(@Req() { user }: RequestWithUser) {
     return this.authService.createUserToken(user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('check')
+  public async checkToken(@Req() { user: payload }: RequestWithTokenPayload) {
+    return payload;
   }
 }

@@ -6,13 +6,14 @@ import { MongoidValidationPipe } from '@project/shared/shared-pipes';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { AuthService } from './auth.service';
-import { Controller, Post, Body, Param, Get, HttpStatus, HttpCode, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Body, Param, Get, HttpStatus, HttpCode, UseGuards, Req, Patch } from '@nestjs/common';
 import { fillObject } from '@project/util/util-core'
 import { UserRdo } from './rdo/user.rdo';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiResponse } from '@nestjs/swagger/dist';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { NotifyService } from '../notify/notify.service';
+import { ChangeUserPasswordDto } from './dto/change-user-password.dto';
 
 @ApiTags('authentication')
 @Controller('auth')
@@ -29,8 +30,8 @@ export class AuthController {
   @Post('register')
   public async create(@Body() dto: CreateUserDTO) {
     const newUser = await this.authService.register(dto);
-    const { email, name } = newUser;
-    await this.notifyService.registerSubscriber({ email, name })
+    const { email, role, name } = newUser;
+    await this.notifyService.registerSubscriber({ email, role, name })
     return fillObject(UserRdo, newUser);
   }
 
@@ -77,5 +78,17 @@ export class AuthController {
   @Post('check')
   public async checkToken(@Req() { user: payload }: RequestWithTokenPayload) {
     return payload;
+  }
+
+  @ApiResponse({
+    type: LoggedUserRdo,
+    status: HttpStatus.OK,
+    description: 'The password has been successfully changed'
+  })
+  @Patch('changePassword')
+  @UseGuards(JwtAuthGuard)
+  public async changeUserPassword(id: string, @Body() dto: ChangeUserPasswordDto) {
+    const updateUser = await this.authService.changePassword(id, dto);
+    return fillObject(UserRdo, updateUser);
   }
 }

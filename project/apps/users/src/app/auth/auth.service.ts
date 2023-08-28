@@ -1,3 +1,4 @@
+import { ChangeUserPasswordDto } from './dto/change-user-password.dto';
 import { RefreshTokenService } from './../refresh-token/refresh-token.service';
 import { ConfigType } from '@nestjs/config';
 import { TaskUserRepository } from './../task-user/task-user.repository';
@@ -74,5 +75,14 @@ export class AuthService {
         expiresIn: this.JwtOptions.refreshTokenExpiresIn
       }),
     }
+  }
+
+  public async changePassword(_id: string, dto: ChangeUserPasswordDto) {
+    const { email, currentPassword, newPassword } = dto;
+
+    const user = await this.verifyUser({ email: email, password: currentPassword });
+    const userEntity = await new TaskUserEntity(user).setPassword(newPassword);
+
+    return this.taskUserRepository.update(user._id, userEntity);
   }
 }

@@ -4,7 +4,7 @@
 @host = {{hostname}}:{{port}}
 @parentPath = api/auth
 @userId = 64e10ec5824dba06873f428a
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU3Yzg1OGFkMmUwYjA1ODExY2Q0Y2IiLCJlbWFpbCI6InVzZXJAbWFpbC5ydSIsInJvbGUiOiJjdXN0b21lciIsIm5hbWUiOiJCb2Jpbmluc2tpeSBCb2IiLCJpYXQiOjE2OTI5MTE3MTYsImV4cCI6MTY5MzE3MDkxNn0.rsstiv9I-ArptlaDhHz6nEY-O_O9jRa2-SzkG4p8qOI
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGVjZWU0NzUxOTQ2M2RjMDE5ZDg3YTYiLCJlbWFpbCI6InVzZXJAbWFpbC5ydSIsInJvbGUiOiJjdXN0b21lciIsIm5hbWUiOiJib2IiLCJpYXQiOjE2OTMyNTE3MDgsImV4cCI6MTY5MzUxMDkwOH0.ybGgbuuiCWlSeF44SLrm4aNFWLnY-DjTrLqJrMD_92U
 @refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU3Yzg1OGFkMmUwYjA1ODExY2Q0Y2IiLCJlbWFpbCI6InVzZXJAbWFpbC5ydSIsInJvbGUiOiJjdXN0b21lciIsIm5hbWUiOiJCb2Jpbmluc2tpeSBCb2IiLCJ0b2tlbklkIjoiYTAwMmQyMmYtZTBhMi00NjQ1LThjNzItZDVhY2UzMTczNTJhIiwiaWF0IjoxNjkyOTExNzE2LCJleHAiOjE2OTU1MDM3MTZ9.TNY3Jzm4Js-qdULBaGgmyfr4NGKFtucys7cKEeit0Lw
 @contentType = application/json
 
@@ -13,11 +13,11 @@ POST {{host}}/{{parentPath}}/register HTTP/1.1
 Content-Type: {{contentType}}
 
 {
-  "name": "Bobininskiy Bob",
+  "name": "bob",
   "email": "user@mail.ru",
   "city": "Москва",
   "password": "qwerty",
-  "role": "executor",
+  "role": "customer",
   "avatar": "https://images/avatarka.jpeg",
   "dateOfBirth": "1991-01-01"
 }
@@ -50,5 +50,18 @@ Authorization: Bearer {{refreshToken}}
 # Check user token
 POST {{host}}/{{parentPath}}/check HTTP/1.1
 Authorization: Bearer {{accessToken}}
+
+###
+
+# Change user password
+PATCH {{host}}/{{parentPath}}/changePassword HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+{
+  "email": "user@mail.ru",
+  "currentPassword": "qwerty",
+  "newPassword": "123456"
+}
 
 ###

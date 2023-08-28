@@ -1,0 +1,43 @@
+@hostname = http://localhost
+@port = 4000
+@host = {{hostname}}:{{port}}
+@usersPath = api/users
+@taskPath = api/tasks
+@contentType = application/json
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU3Yzg1OGFkMmUwYjA1ODExY2Q0Y2IiLCJlbWFpbCI6InVzZXJAbWFpbC5ydSIsInJvbGUiOiJjdXN0b21lciIsIm5hbWUiOiJCb2Jpbmluc2tpeSBCb2IiLCJpYXQiOjE2OTMwNzI4MDYsImV4cCI6MTY5MzMzMjAwNn0.Y8fQ4NxlyqZ35gYGihlG7pBjvIA3ij-F869GE0TTNVs
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU3Yzg1OGFkMmUwYjA1ODExY2Q0Y2IiLCJlbWFpbCI6InVzZXJAbWFpbC5ydSIsInJvbGUiOiJjdXN0b21lciIsIm5hbWUiOiJCb2Jpbmluc2tpeSBCb2IiLCJ0b2tlbklkIjoiNzQxYzE1MWYtMjc0YS00ZDdmLWEwYzktZWE2N2VkNjBlYWNmIiwiaWF0IjoxNjkzMDcyODA2LCJleHAiOjE2OTU2NjQ4MDZ9._Ws1qCbzNJEOi8MPG8JYDWWPCzxU6a0DtE6jfWCGSuw
+
+# Login user by email and password
+POST {{host}}/{{usersPath}}/login HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "email": "user@mail.ru",
+  "password": "qwerty"
+}
+
+###
+
+# Get new JWT pair
+POST {{host}}/{{usersPath}}/refresh HTTP/1.1
+Authorization: Bearer {{refreshToken}}
+
+###
+
+# create a new task
+POST {{host}}/{{taskPath}}/ HTTP/1.1
+Authorization: Bearer {{accessToken}}
+Content-Type: {{contentType}}
+
+{
+  "title": "Новое задание",
+  "description": "Проверяем описание",
+  "categories": 1,
+  "price": 1000,
+  "address": "Пеньки",
+  "city": "Moscow",
+  "status": "New",
+  "userId": 1
+}
+
+###

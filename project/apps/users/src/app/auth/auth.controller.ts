@@ -1,9 +1,12 @@
+import { RequestWithTokenPayload } from '@project/shared/app-types';
+import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
+import { RequestWithUser } from '@project/shared/app-types';
+import { LocalAuthGuard } from './guards/local-auth.guard';
 import { MongoidValidationPipe } from '@project/shared/shared-pipes';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
-import { LoginUserDTO } from './dto/login-user.dto';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { AuthService } from './auth.service';
-import { Controller, Post, Body, Param, Get, HttpStatus, HttpCode, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Param, Get, HttpStatus, HttpCode, UseGuards, Req } from '@nestjs/common';
 import { fillObject } from '@project/util/util-core'
 import { UserRdo } from './rdo/user.rdo';
 import { ApiTags } from '@nestjs/swagger';
@@ -31,6 +34,7 @@ export class AuthController {
     return fillObject(UserRdo, newUser);
   }
 
+  @UseGuards(LocalAuthGuard)
   @ApiResponse({
     type: LoggedUserRdo,
     status: HttpStatus.OK,
@@ -42,10 +46,8 @@ export class AuthController {
   })
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  public async login(@Body() dto: LoginUserDTO) {
-    const verifiedUser = await this.authService.verifyUser(dto);
-    const loggedUser = await this.authService.createUserToken(verifiedUser);
-    return fillObject(LoggedUserRdo, Object.assign(verifiedUser, loggedUser));
+  public async login(@Req() { user }: RequestWithUser) {
+    return this.authService.createUserToken(user);
   }
 
   @ApiResponse({
@@ -58,5 +60,22 @@ export class AuthController {
   public async show(@Param('id', MongoidValidationPipe) id: string) {
     const existUser = await this.authService.getUser(id);
     return fillObject(UserRdo, existUser);
+  }
+
+  @UseGuards(JwtRefreshGuard)
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Get a new access/refresh tokens'
+  })
+  public async refreshToken(@Req() { user }: RequestWithUser) {
+    return this.authService.createUserToken(user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('check')
+  public async checkToken(@Req() { user: payload }: RequestWithTokenPayload) {
+    return payload;
   }
 }

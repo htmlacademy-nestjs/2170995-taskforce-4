@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger/dist';
 import { City, UserRole } from '@project/shared/app-types';
-import { IsEmail, IsISO8601, IsString, IsEnum } from 'class-validator';
+import { IsEmail, IsISO8601, IsString, IsEnum, Length } from 'class-validator';
 import { AUTH_USER_DATE_BIRTH_NOT_VALID, AUTH_USER_EMAIL_NOT_VALID, AUTH_USER_CITY_NOT_VALID, AUTH_USER_ROLE_NOT_VALID } from '../auth.constant';
 
 export class CreateUserDTO {
@@ -8,7 +8,8 @@ export class CreateUserDTO {
     description: 'User full name',
     example: 'Ivleev Stiv',
   })
-  @IsString()
+  @IsString({ message: 'name is required' })
+  @Length(3, 50, { message: 'Min length is 3, max is 50' })
   public name: string;
 
   @ApiProperty({
@@ -29,7 +30,9 @@ export class CreateUserDTO {
     description: 'User password',
     example: 'qwerty'
   })
-  @IsString()
+  @IsString({ message: 'password is required' })
+  @Length(6, 12, { message: 'Min length for password is 6, max is 12' })
+
   public password: string;
 
   @ApiProperty({

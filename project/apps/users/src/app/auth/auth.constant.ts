@@ -10,4 +10,7 @@ export const AUTH_USER_CITY_NOT_VALID = `The City must be ${City.Moscow}, ${City
 export const AUTH_USER_ROLE_NOT_VALID = `The user role must be ${UserRole.Customer} or ${UserRole.Executor}`;
 export const AUTH_MIN_USER_AGE = 18;
 export const AUTH_USER_NOT_VALID_MIN_AGE = `The user is not ${AUTH_MIN_USER_AGE} year old`;
+export const AUTH_USER_MAX_NUMBER_SPECIALIZATION = 5;
+export const AUTH_USER_MAX_NUMBER_SPECIALIZATION_NOT_VALID = 'maximum number of specializations is 5';
+
 

@@ -1,4 +1,7 @@
-import { RequestWithTokenPayload } from '@project/shared/app-types';
+import { UpdateUserDTO } from './dto/update-user.dto';
+import { UserExecutorRdo } from './rdo/user-executor.rdo';
+import { UserCustomerRdo } from './rdo/user-customer.rdo';
+import { RequestWithTokenPayload, UserRole } from '@project/shared/app-types';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { RequestWithUser } from '@project/shared/app-types';
 import { LocalAuthGuard } from './guards/local-auth.guard';
@@ -24,6 +27,7 @@ export class AuthController {
   ) {}
 
   @ApiResponse({
+    type: UserRdo,
     status: HttpStatus.CREATED,
     description: 'The new user has been successfully created'
   })
@@ -32,7 +36,12 @@ export class AuthController {
     const newUser = await this.authService.register(dto);
     const { email, role, name } = newUser;
     await this.notifyService.registerSubscriber({ email, role, name })
-    return fillObject(UserRdo, newUser);
+
+    if (role === UserRole.Customer) {
+      return fillObject(UserCustomerRdo, newUser);
+    } else if (role === UserRole.Executor) {
+      return fillObject(UserExecutorRdo, newUser);
+    }
   }
 
   @UseGuards(LocalAuthGuard)
@@ -60,7 +69,12 @@ export class AuthController {
   @Get(':id')
   public async show(@Param('id', MongoidValidationPipe) id: string) {
     const existUser = await this.authService.getUser(id);
-    return fillObject(UserRdo, existUser);
+
+    if (existUser.role === UserRole.Customer) {
+      return fillObject(UserCustomerRdo, existUser);
+    } else if (existUser.role === UserRole.Executor) {
+      return fillObject(UserExecutorRdo, existUser);
+    }
   }
 
   @UseGuards(JwtRefreshGuard)
@@ -90,5 +104,33 @@ export class AuthController {
   public async changeUserPassword(id: string, @Body() dto: ChangeUserPasswordDto) {
     const updateUser = await this.authService.changePassword(id, dto);
     return fillObject(UserRdo, updateUser);
+  }
+
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The users list has been successfully added.'
+  })
+  @Post('usersList')
+  public async getUsers(@Body() data: {ids: string[]}) {
+    const users = await this.authService.getUsers(data.ids);
+
+    return fillObject(UserRdo, users);
+  }
+
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'User has been successfully updated.'
+  })
+  @HttpCode(HttpStatus.OK)
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  public async updateUser(@Param('id', MongoidValidationPipe) id:string, @Body() dto: UpdateUserDTO) {
+    const user = await this.authService.updateUser(id, dto);
+
+    if(user.role === UserRole.Customer) {
+      return fillObject(UserCustomerRdo, user);
+    } else if(user.role === UserRole.Executor) {
+      return fillObject(UserExecutorRdo, user);
+    }
   }
 }

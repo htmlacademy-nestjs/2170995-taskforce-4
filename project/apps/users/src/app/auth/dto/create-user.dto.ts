@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger/dist';
 import { City, UserRole } from '@project/shared/app-types';
 import { Transform } from 'class-transformer';
-import { IsEmail, IsString, IsEnum, Length, MaxDate } from 'class-validator';
+import { IsEmail, IsString, IsEnum, Length, MaxDate, MaxLength } from 'class-validator';
 import dayjs from 'dayjs';
 import { AUTH_USER_EMAIL_NOT_VALID, AUTH_USER_CITY_NOT_VALID, AUTH_USER_ROLE_NOT_VALID, AUTH_MIN_USER_AGE, AUTH_USER_NOT_VALID_MIN_AGE } from '../auth.constant';
 
@@ -57,4 +57,11 @@ export class CreateUserDTO {
   @Transform(({ value }) => new Date(value))
   @MaxDate(dayjs(new Date()).subtract(AUTH_MIN_USER_AGE, 'year').toDate(), {message: AUTH_USER_NOT_VALID_MIN_AGE})
   public dateOfBirth: Date;
+
+  @ApiProperty({
+    description: 'Information about yourself',
+    example: 'Плачу во время',
+  })
+  @MaxLength(300, { message: 'Max length is 300 symbols' })
+  public personalInfo?: string;
 }

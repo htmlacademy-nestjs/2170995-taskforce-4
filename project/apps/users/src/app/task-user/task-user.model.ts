@@ -5,6 +5,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 @Schema({
   collection: 'users',
   timestamps: true,
+  discriminatorKey: 'role',
 })
 export class TaskUserModel extends Document implements User {
   @Prop({
@@ -35,7 +36,7 @@ export class TaskUserModel extends Document implements User {
   public role: UserRole;
 
   @Prop()
-  public avatar: string;
+  public avatar?: string;
 
   @Prop({
     required: true,

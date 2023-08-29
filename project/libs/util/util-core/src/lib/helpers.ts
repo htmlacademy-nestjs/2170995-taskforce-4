@@ -33,3 +33,7 @@ export function parseTime(time: string): TimeAndUnit {
 
   return { value, unit }
 }
+
+export function userAge(date: string): number {
+  return ((new Date().getTime() - new Date(date).getTime()) / (24 * 3600 * 365 * 1000)) | 0;
+}

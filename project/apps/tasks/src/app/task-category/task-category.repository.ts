@@ -49,4 +49,10 @@ export class TaskCategoryRepository implements CRUDRepository<TaskCategoryEntity
       data: { ...item.toObject(), categoryId}
     });
   }
+
+  public findByTitle(title: string): Promise<Category | null> {
+    return this.prisma.category.findFirst({
+      where: { title },
+    });
+  }
 }

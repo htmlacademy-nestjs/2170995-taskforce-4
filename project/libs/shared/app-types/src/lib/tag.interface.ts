@@ -1,8 +1,5 @@
 export interface Tag {
   tagId?: number;
-  createdAt: Date;
-  updatedAt: Date;
-  taskId?: number;
+  createdAt?: Date;
   text: string;
-  userId: string;
 }

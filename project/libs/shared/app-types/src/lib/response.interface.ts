@@ -1,7 +1,6 @@
 export interface Response {
-  id?: string;
-  text: string;
+  responseId?: number;
   taskId: number;
-  userId: string;
-  createdAt: Date;
+  executorId: string;
+  offerPrice?: number;
 }

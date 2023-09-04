@@ -1,20 +1,24 @@
-import {  Tag, Category, TaskStatus, City, Comment, Response  } from '../index'
+import {  Tag, Comment, Response, Review  } from '../index'
 
 export interface Task {
-  id?: number;
+  taskId?: number;
   title: string;
   description: string;
-  categories: Category[];
+  categoryId: number;
   price?: number;
   dueDate?: Date;
   image?: string;
   address?: string;
   tags?: Tag[];
   city: string;
-  createdAt: Date;
+  createdAt?: Date;
   updatedAt?: Date;
   status: string;
-  userId: string;
-  responses?: Response[];
+  userId?: string;
+  executorId?: string;
+  responsesCount?: number;
+  commentsCount?: number;
   comments?: Comment[];
+  responses?: Response[];
+  review?: Review;
 }

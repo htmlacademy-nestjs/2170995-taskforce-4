@@ -9,8 +9,9 @@ async function fillDb() {
     create: {
       title: 'Течет кран',
       description: 'Необходимо починить кран',
-      categories: {
+      category: {
         create: {
+          categoryId: 1,
           title: 'Ремонт'
         },
       },
@@ -21,7 +22,7 @@ async function fillDb() {
         create: [
           {
             text: 'Сломать',
-            userId: '30',
+
           }
         ]
       },
@@ -29,7 +30,14 @@ async function fillDb() {
       userId: '30',
       status: 'New',
       responses: {},
-      comments: {}
+      comments: {
+        create: [
+          {
+            text: 'Привет',
+            userId: '30',
+          }
+        ]
+      }
     }
   })
   console.info('🤘️ Database was filled')

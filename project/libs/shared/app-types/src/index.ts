@@ -18,3 +18,4 @@ export * from './lib/refresh-token-payload.interface';
 export * from './lib/request-with-token-payload';
 export * from './lib/user-customer.interface';
 export * from './lib/user-executor.interface';
+export * from './lib/sort-type.enum';

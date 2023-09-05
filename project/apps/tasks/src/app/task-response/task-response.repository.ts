@@ -11,6 +11,16 @@ export class TaskResponseRepository
   constructor(private readonly prisma: PrismaService) {}
 
   public async create(item: TaskResponseEntity): Promise<Response> {
+    const entityData = item.toObject();
+    await this.prisma.task.update({
+      where: {
+        taskId: entityData.taskId,
+      },
+      data: {
+        responsesCount: { increment: 1 },
+        executorId: item.executorId,
+      }
+    });
     return this.prisma.response.create({
       data: {
         offerPrice: item.offerPrice,

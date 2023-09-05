@@ -8,6 +8,7 @@ import { Body, Post, Get, Param, Controller, Delete, HttpStatus, HttpCode, Patch
 import { TaskQuery } from './query/task.query';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { UpdateTaskResponseDto } from './dto/update-task-response.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
 @ApiTags('tasks')
 @Controller('tasks')
 export class TaskController {
@@ -147,5 +148,16 @@ export class TaskController {
       query
     );
     return fillObject(TaskRdo, tasks);
+  }
+
+  @ApiResponse({
+    type: TaskRdo,
+    status: HttpStatus.CREATED,
+    description: 'The task has been successfully updated.'
+  })
+  @Patch('update/:id')
+  public async update(@Body() dto: UpdateTaskDto, @Param('id') id: number) {
+    const task = await this.taskService.update(id, dto);
+    return fillObject(TaskRdo, task);
   }
 }

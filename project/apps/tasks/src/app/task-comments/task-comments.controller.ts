@@ -2,9 +2,10 @@ import { HttpStatusCode } from 'axios';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CommentRdo } from './rdo/comment.rdo';
 import { TaskCommentService } from './task-comments.service';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { fillObject } from '@project/util/util-core';
+import { CommentQuery } from './query/comment.query';
 
 @ApiTags('comments')
 @Controller('comments')
@@ -56,6 +57,16 @@ export class CommentController {
   async findTaskComments(@Param('id') id: number) {
     const currentComment = await this.taskCommentService.findCommentsByTaskId(id);
     return fillObject(CommentRdo, currentComment);
+  }
+
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Commens found'
+  })
+  @Get('/')
+  async index(@Query() query: CommentQuery) {
+    const comments = await this.taskCommentService.getComments(query);
+    return fillObject(CommentRdo, comments);
   }
 }
 

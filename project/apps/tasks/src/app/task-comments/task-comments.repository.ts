@@ -1,3 +1,4 @@
+import { CommentQuery } from './query/comment.query';
 import { PrismaService } from './../prisma/prisma.service';
 import { CRUDRepository } from '@project/util/util-types';
 import { TaskCommentEntity } from './task-comments.entiti';
@@ -9,8 +10,17 @@ export class TaskCommentRepository implements CRUDRepository<TaskCommentEntity, 
   constructor(private readonly prisma: PrismaService) {}
 
   public async create(item: TaskCommentEntity): Promise<Comment> {
+    const entityData = item.toObject();
+    await this.prisma.task.update({
+      where: {
+        taskId: entityData.taskId
+      },
+      data: {
+        commentsCount: { increment: 1 }
+      }
+    });
     return this.prisma.comment.create({
-      data: { ...item.toObject() },
+      data: { ...entityData },
     });
   }
 
@@ -22,12 +32,12 @@ export class TaskCommentRepository implements CRUDRepository<TaskCommentEntity, 
     });
   }
 
-  public async update(id: number, item: TaskCommentEntity): Promise<Comment> {
+  public async update(commentId: number, item: TaskCommentEntity): Promise<Comment> {
     return this.prisma.comment.update({
       where: {
-        commentId: id,
+        commentId: commentId,
       },
-      data: { ...item.toObject(), commentId: id },
+      data: { ...item.toObject(), commentId: commentId },
     });
   }
 
@@ -47,13 +57,10 @@ export class TaskCommentRepository implements CRUDRepository<TaskCommentEntity, 
     });
   }
 
-  public find(ids: number[] = []): Promise<Comment[]> {
+  public find({ limit, page }: CommentQuery): Promise<Comment[]> {
     return this.prisma.comment.findMany({
-      where: {
-        commentId: {
-          in: ids.length > 0 ? ids : undefined,
-        },
-      },
+      take: limit,
+      skip: page > 0 ? limit * (page - 1) : undefined,
     });
   }
 }

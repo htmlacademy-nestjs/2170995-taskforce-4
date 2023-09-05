@@ -3,7 +3,7 @@
 @port = 3002
 @host = {{hostname}}:{{port}}
 @parentPath = api/tasks
-@filtresPath = api/tasks?sortDirection=desc&categories=2&limit=2&page=1
+@filtresPath = api/tasks?sortDirection=desc&categories=1&limit=5&page=1&sortType=commentsCount
 @taskId = 4
 @deleteTaskId = 3
 @userId = 20
@@ -21,10 +21,10 @@ Content-Type: {{contentType}}
   "dueDate" : "2023-10-10",
   "image": "https://images/picture.jpeg",
   "address": "Задний проход",
-  "tags": ["Доставка"],
+  "tags": ["ремонт"],
   "city": "Москва",
   "category": "Доставка",
-  "status": "New",
+  "status": "Completed",
   "userId": "20"
 }
 
@@ -52,7 +52,7 @@ GET {{host}}/{{filtresPath}} HTTP/1.1
 ###
 
 # Update task
-PATCH {{host}}/{{parentPath}}/{{taskId}} HTTP/1.1
+PATCH {{host}}/{{parentPath}}/update/{{taskId}} HTTP/1.1
 Content-Type: application/json
 
 {

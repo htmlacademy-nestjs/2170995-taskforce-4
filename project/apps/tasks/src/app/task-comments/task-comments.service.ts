@@ -1,10 +1,12 @@
+import { COMMENT_NOT_FOUND } from './task-comment.constants';
 import { TaskService } from './../task/task.service';
 import { TaskCommentEntity } from './task-comments.entiti';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { TaskCommentRepository } from './task-comments.repository';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Comment } from '@project/shared/app-types';
 import dayjs from 'dayjs';
+import { CommentQuery } from './query/comment.query';
 
 @Injectable()
 export class TaskCommentService {
@@ -26,8 +28,8 @@ export class TaskCommentService {
     return this.taskCommentRepository.findById(id);
   }
 
-  public async getComments(id: number) {
-    return this.taskCommentRepository.findById(id);
+  public async getComments(query: CommentQuery): Promise <Comment[]> {
+    return this.taskCommentRepository.find(query);
   }
 
   public async findCommentsByTaskId(taskId: number): Promise<Comment[]> {
@@ -40,5 +42,14 @@ export class TaskCommentService {
 
     await this.taskCommentRepository.destroy(id);
     await this.taskService.incrementCommentsCounter(taskId, -1);
+  }
+
+  public async update(commentId: number, dto: CreateCommentDto) {
+    const existComment = await this.taskCommentRepository.findById(commentId);
+    const newCommentEntity = await new TaskCommentEntity({ ...existComment, ...dto});
+
+    if(!existComment) throw new NotFoundException(COMMENT_NOT_FOUND);
+
+    return await this.taskCommentRepository.update(commentId, newCommentEntity);
   }
 }

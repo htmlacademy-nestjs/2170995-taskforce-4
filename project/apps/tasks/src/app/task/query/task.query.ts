@@ -12,7 +12,7 @@ export class TaskQuery {
   @Transform(({ value }) => value.split(',').map((categoryId) => +categoryId))
   @IsArray({})
   @IsOptional()
-  public categoryId?: number;
+  public categories?: number[];
 
   @Transform(({ value }) => value as City)
   @IsEnum(City)

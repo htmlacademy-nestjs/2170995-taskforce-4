@@ -1,7 +1,7 @@
 import { Comment } from '@project/shared/app-types';
 
 export class TaskCommentEntity implements Comment {
-  public commentId: number;
+  public commentId?: number;
   public text: string;
   public taskId: number;
   public userId: string;

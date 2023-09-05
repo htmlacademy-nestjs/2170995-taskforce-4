@@ -12,6 +12,7 @@ export class TaskReviewRepository
 
   public async create(item: TaskReviewEntity): Promise<Review> {
     const entityData = item.toObject();
+
     return this.prisma.review.create({
       data: {
         ...entityData,
@@ -73,7 +74,35 @@ export class TaskReviewRepository
     });
   }
 
-  public update(reviewId: number, item: TaskReviewEntity): Promise<Review> {
-    return Promise.resolve(undefined);
+  public async update(reviewId: number, item: TaskReviewEntity): Promise<Review> {
+    const entityData = item.toObject();
+    return await this.prisma.review.update({
+      where: {
+        reviewId,
+      },
+      data: {
+        ...entityData,
+      }
+    });
+  }
+
+  public async executorFiledTasksCount(executorId: string): Promise<number> {
+    const failedTask = await this.prisma.task.findMany({
+      where: {
+        status: 'Failed',
+        executorId
+      },
+    });
+
+    return failedTask.length;
+  }
+
+  public async reviewsCount(executorId: string): Promise<number> {
+    const reviews = await this.prisma.review.findMany({
+      where: {
+        executorId,
+        },
+    });
+    return reviews.length;
   }
 }

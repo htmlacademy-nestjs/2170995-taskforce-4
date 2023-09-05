@@ -8,11 +8,15 @@ import { TaskReviewRepository } from './task-reviews.repository';
 export class TaskReviewService {
   constructor(private readonly taskReviewRepository: TaskReviewRepository) {}
 
-  findByExecutorId(executorId: string) {
+  async findByExecutorId(executorId: string) {
     return this.taskReviewRepository.findByExecutorId(executorId);
   }
-  findRating(executorId: string) {
-    return this.taskReviewRepository.getRatingSum(executorId);
+  async findRating(executorId: string) {
+    const ratingsSum = await this.taskReviewRepository.getRatingSum(executorId);
+    const reviews = await this.taskReviewRepository.reviewsCount(executorId);
+    const failedTasks = await this.taskReviewRepository.executorFiledTasksCount(executorId);
+
+    return (ratingsSum / (reviews + failedTasks));
   }
   async create(dto: CreateReviewDto): Promise<Review> {
     const reviewEntity = await new TaskReviewEntity({ ...dto });

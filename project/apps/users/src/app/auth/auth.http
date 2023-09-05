@@ -14,7 +14,7 @@ Content-Type: {{contentType}}
 
 {
   "name": "bob",
-  "email": "executor@mail.ru",
+  "email": "bob@mail.ru",
   "city": "Москва",
   "password": "qwerty",
   "role": "executor",

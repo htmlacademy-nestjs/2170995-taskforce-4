@@ -5,7 +5,7 @@
 @parentPath = api/reviews
 @reviewId = 2
 @taskId = 4
-@executorId = 15
+@executorId = 64f7b4ff3b1f91564619985d
 @deleteReviewId = 1
 @contentType = application/json
 
@@ -15,10 +15,10 @@ Content-Type: {{contentType}}
 
 {
   "review": "good jobfsadfsadfgood jobfsadfsadfgood jobfsadfsadfgood jobfsadfsadfgood jobfsadfsadfgood jobfsadfsadfgood jobfsadfsadfgood jobfsadfsadfgood jobfsadfsadf",
-  "rating": 4,
+  "rating": 3,
   "taskId": 4,
   "userId": "20",
-  "executorId": "15"
+  "executorId": "64f7b4ff3b1f91564619985d"
 }
 
 ###

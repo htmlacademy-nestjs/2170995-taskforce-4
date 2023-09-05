@@ -63,7 +63,7 @@ export class TaskRepository implements CRUDRepository<TaskEntity, number, Task> 
   public async find(query?: TaskQuery): Promise<Task[]> {
     const {
       limit,
-      categoryId,
+      categories,
       status,
       city,
       tag,
@@ -80,7 +80,11 @@ export class TaskRepository implements CRUDRepository<TaskEntity, number, Task> 
         city,
         userId,
         executorId,
-        categoryId,
+        category: {
+          categoryId: {
+            in: categories
+          }
+        },
         tags: { ...(existingTag ? {
           some: { text: existingTag.text }
         } : {})},
@@ -100,8 +104,32 @@ export class TaskRepository implements CRUDRepository<TaskEntity, number, Task> 
     });
   }
 
-  public update(_id: number, _item: TaskEntity): Promise<Task> {
-    return Promise.resolve(undefined);
+  public async update(taskId: number, item: TaskEntity): Promise<Task> {
+    const entityData = item.toObject();
+
+    return await this.prisma.task.update({
+      where: {
+        taskId,
+      },
+      data: {
+        ...entityData,
+        comments: {
+          connect: []
+        },
+        tags: {
+          connect: entityData.tags.map(({ tagId }) => ({  tagId }))
+        },
+        responses: {
+          connect: []
+        }
+      },
+      include: {
+        comments: true,
+        category: true,
+        tags: true,
+        responses: true,
+      }
+    })
   }
 
   public async setAcceptedResponse(taskId: number, executorId: string, price?: number) {

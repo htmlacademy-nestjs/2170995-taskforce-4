@@ -1,3 +1,4 @@
+import { UpdateTaskDto } from './dto/update-task.dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { RESPONSE_NOT_FOUND, TAGS_MAX_COUNT, TASK_CANT_TAKE, TASK_EXECUTOR_APPOINTED, TASK_EXECUTOR_A_HAS_JOB, TASK_EXECUTOR_EXISTS, TASK_NOT_FOUND, TASK_STATUS_CONDITIONS_WRONG } from './task.constant';
 import { TaskResponseService } from './../task-response/task-response.service';
@@ -194,5 +195,14 @@ public async addResponse(taskId: number, dto: UpdateTaskResponseDto) {
     }
 
     return await this.taskRepository.addResponse(responseId, taskId);
+  }
+
+  public async update(taskId: number, dto: UpdateTaskDto) {
+    const existTask = await this.taskRepository.findById(taskId);
+    const newTaskEntity = new TaskEntity({ ...existTask, ...dto });
+
+    if(!existTask) throw new NotFoundException(TASK_NOT_FOUND);
+
+    return await this.taskRepository.update(taskId, newTaskEntity);
   }
 }

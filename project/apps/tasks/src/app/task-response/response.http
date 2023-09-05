@@ -20,7 +20,7 @@ Content-Type: {{contentType}}
 
 ###
 
-# Get response by ID
+# Get response by taskId
 GET {{host}}/{{parentPath}}/{{taskId}} HTTP/1.1
 
 ###

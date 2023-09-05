@@ -12,22 +12,26 @@ datasource db {
 }
 
 model Task {
-  taskId      Int        @id @default(autoincrement()) @map("task_id")
-  title       String     @default("")
-  description String     @default("")
-  categories  Category[]
-  price       Int?       @default(0)
-  dueDate     DateTime?  @map("due_date")
-  image       String?    @default("")
-  address     String?    @default("")
-  tags        Tag[]
-  city        String
-  createdAt   DateTime   @default(now()) @map("create_at")
-  updatedAt   DateTime   @updatedAt @map("update_at")
-  status      String
-  userId      String?    @map("user_id")
-  responses   Response[]
-  comments    Comment[]
+  taskId          Int        @id @default(autoincrement()) @map("task_id")
+  title           String     @default("")
+  description     String     @default("")
+  category        Category   @relation(fields: [categoryId], references: [categoryId])
+  categoryId      Int        @map("category_id")
+  price           Int?       @default(0)
+  dueDate         DateTime?  @map("due_date")
+  image           String?    @default("")
+  address         String?    @default("")
+  tags            Tag[]
+  city            String     @default("Москва")
+  createdAt       DateTime   @default(now()) @map("create_at")
+  updatedAt       DateTime   @updatedAt @map("update_at")
+  status          String     @default("New")
+  userId          String?    @map("user_id")
+  executorId      String?    @default("") @map("executor_id")
+  responsesCount  Int?   @default(0) @map("responses_count")
+  commentsCount   Int?   @default(0) @map("comments_count")
+  responses       Response[]
+  comments        Comment[]
 
   @@map("tasks")
 }
@@ -42,7 +46,7 @@ model Category {
 
 model Comment {
   commentId Int      @id @default(autoincrement()) @map("comment_id")
-  text      String
+  text      String   @default("")
   userId    String   @map("user_id")
   task      Task     @relation(fields: [taskId], references: [taskId], onDelete: Cascade, onUpdate: Cascade)
   taskId    Int      @map("task_id")
@@ -54,24 +58,31 @@ model Comment {
 
 model Tag {
   tagId     Int      @id @default(autoincrement()) @map("tag_id")
-  text      String
-  userId    String   @map("user_id")
-  task      Task     @relation(fields: [taskId], references: [taskId], onDelete: Cascade, onUpdate: Cascade)
-  taskId    Int      @map("task_id")
+  text      String   @unique
+  task      Task[]
   createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("tags")
 }
 
 model Response {
   responseId Int      @id @default(autoincrement()) @map("response_id")
-  text       String
-  userId     String   @map("user_id")
+  offerPrice Int
   task       Task     @relation(fields: [taskId], references: [taskId], onDelete: Cascade, onUpdate: Cascade)
   taskId     Int      @map("task_id")
+  executorId String   @map("executor_id")
   createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
 
   @@map("responses")
+}
+
+model Review {
+  reviewId    Int     @id @default(autoincrement()) @map("review_id")
+  taskId      Int     @map("task_id")
+  userId      String  @map("user_id")
+  executorId  String  @map("executor_id")
+  review      String  @default("")
+  rating      Int     @default(0)
+
+  @@map("reviews")
 }

@@ -11,7 +11,7 @@ export class TaskCategoryController {
     private readonly taskCategoryService: TaskCategoryService
   ) {}
 
-  @Get('/id')
+  @Get('/:id')
   async show(@Param('id') id:number) {
     const existCategory = await this.taskCategoryService.getCategory(id);
     return fillObject(CategoryRdo, existCategory);

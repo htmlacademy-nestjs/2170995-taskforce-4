@@ -3,8 +3,8 @@
 @port = 3001
 @host = {{hostname}}:{{port}}
 @parentPath = api/auth
-@userId = 64e10ec5824dba06873f428a
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU3Yzg1OGFkMmUwYjA1ODExY2Q0Y2IiLCJlbWFpbCI6InVzZXJAbWFpbC5ydSIsInJvbGUiOiJjdXN0b21lciIsIm5hbWUiOiJCb2Jpbmluc2tpeSBCb2IiLCJpYXQiOjE2OTI5MTE3MTYsImV4cCI6MTY5MzE3MDkxNn0.rsstiv9I-ArptlaDhHz6nEY-O_O9jRa2-SzkG4p8qOI
+@userId = 64ed25fc1912012fa97c865c
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGVkMjNmNzdiOTc5MTliZjg0ODI4MWMiLCJlbWFpbCI6InVzZXJAbWFpbC5ydSIsInJvbGUiOiJjdXN0b21lciIsIm5hbWUiOiJib2IiLCJpYXQiOjE2OTMyNjI4NTEsImV4cCI6MTY5MzUyMjA1MX0.01iK_3sNmwkikkgweoHx-wbCL7Qh7IIkTz2fUTeViVg
 @refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU3Yzg1OGFkMmUwYjA1ODExY2Q0Y2IiLCJlbWFpbCI6InVzZXJAbWFpbC5ydSIsInJvbGUiOiJjdXN0b21lciIsIm5hbWUiOiJCb2Jpbmluc2tpeSBCb2IiLCJ0b2tlbklkIjoiYTAwMmQyMmYtZTBhMi00NjQ1LThjNzItZDVhY2UzMTczNTJhIiwiaWF0IjoxNjkyOTExNzE2LCJleHAiOjE2OTU1MDM3MTZ9.TNY3Jzm4Js-qdULBaGgmyfr4NGKFtucys7cKEeit0Lw
 @contentType = application/json
 
@@ -13,13 +13,14 @@ POST {{host}}/{{parentPath}}/register HTTP/1.1
 Content-Type: {{contentType}}
 
 {
-  "name": "Bobininskiy Bob",
-  "email": "user@mail.ru",
+  "name": "bob",
+  "email": "customer@mail.ru",
   "city": "Москва",
   "password": "qwerty",
-  "role": "executor",
+  "role": "customer",
   "avatar": "https://images/avatarka.jpeg",
-  "dateOfBirth": "1991-01-01"
+  "dateOfBirth": "1991-01-01",
+  "personalInfo": "Плачу много"
 }
 
 ###
@@ -50,5 +51,40 @@ Authorization: Bearer {{refreshToken}}
 # Check user token
 POST {{host}}/{{parentPath}}/check HTTP/1.1
 Authorization: Bearer {{accessToken}}
+
+###
+
+# Change user password
+PATCH {{host}}/{{parentPath}}/changePassword HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+{
+  "email": "user@mail.ru",
+  "currentPassword": "qwerty",
+  "newPassword": "123456"
+}
+
+###
+
+# Update user
+PATCH {{host}}/{{parentPath}}/{{userId}} HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+{
+  "name": "Jim"
+}
+
+###
+
+# Get users
+POST {{host}}/{{parentPath}}/usersList HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+{
+  "ids": ["64ed23f77b97919bf848281c", "64ed24a9640ee76d06fdbd1e", "64ed24faca853b6640463eab"]
+}
 
 ###

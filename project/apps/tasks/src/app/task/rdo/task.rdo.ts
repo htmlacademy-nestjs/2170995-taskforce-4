@@ -1,14 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { City, TaskStatus, Category } from '@project/shared/app-types';
-import { Expose } from 'class-transformer';
+import { City, TaskStatus, Category, Tag } from '@project/shared/app-types';
+import { Expose, Transform } from 'class-transformer';
 
 export class TaskRdo {
   @ApiProperty({
     description: 'The uniq task ID',
-    example: 'b6b11e86-e5e4-4ee7-a0e5-41730b7671cc'
+    example: '1'
   })
-  @Expose({ name: '_id'})
-  public id: string;
+  @Expose()
+  public TaskId: string;
 
   @ApiProperty({
     description: 'Task title',
@@ -29,7 +29,7 @@ export class TaskRdo {
     example: 'Fix'
   })
   @Expose()
-  public categories: Category[];
+  public category: Category;
 
   @ApiProperty({
     description: 'The cost of the task',
@@ -63,8 +63,9 @@ export class TaskRdo {
     description: 'List of tags for the task',
     example: 'fix, tobreak, takeoutthetrash'
   })
+  @Transform(({ value }) => value.map((tag: Tag) => tag.text))
   @Expose()
-  public tags: string[];
+  public tags: Tag[];
 
   @ApiProperty({
     description: 'One city from the list',
@@ -102,16 +103,16 @@ export class TaskRdo {
   public userId: string;
 
   @ApiProperty({
-    description: 'List of performers responses',
-    example: ''
+    description: 'Number of responses',
+    example: '5'
   })
   @Expose()
-  public responses: string[];
+  public responsesCount: number;
 
   @ApiProperty({
-    description: 'List of comments',
-    example: ''
+    description: 'Number of comments',
+    example: '15'
   })
   @Expose()
-  public comments: string[];
+  public commentCount: number;
 }

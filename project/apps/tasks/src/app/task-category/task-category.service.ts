@@ -32,4 +32,14 @@ export class TaskCategoryService {
   async updateCategory(id: number, dto: UpdateCategoryDto): Promise<Category> {
     return this.taskCategoryRepository.update(id, new TaskCategoryEntity(dto));
   }
+
+  async findOrCreateCategory(title: string): Promise<Category> {
+    const existCategory = await this.taskCategoryRepository.findByTitle(title);
+
+    if (!existCategory) {
+      return this.createCategory({ title });
+    }
+
+    return existCategory;
+  }
 }

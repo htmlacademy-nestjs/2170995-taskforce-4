@@ -52,4 +52,18 @@ export class UserRdo {
   })
   @Expose()
   public dateOfBirth: string;
+
+  @ApiProperty({
+    description: 'Date the task was created',
+    example: '2023-08-18'
+  })
+  @Expose()
+  public createdAt: Date;
+
+  @ApiProperty({
+    description: 'Task update date',
+    example: '2023-09-18'
+  })
+  @Expose()
+  public updatedAt: Date;
 }

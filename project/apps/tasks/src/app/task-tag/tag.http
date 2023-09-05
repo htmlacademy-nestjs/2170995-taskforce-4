@@ -1,0 +1,11 @@
+# Tags
+@hostname = http://localhost
+@port = 3002
+@host = {{hostname}}:{{port}}
+@parentPath = api/tags
+@contentType = application/json
+
+# Get all tags
+GET {{host}}/{{parentPath}} HTTP/1.1
+
+###

@@ -1,3 +1,5 @@
+import { UpdateUserDTO } from './dto/update-user.dto';
+import { ChangeUserPasswordDto } from './dto/change-user-password.dto';
 import { RefreshTokenService } from './../refresh-token/refresh-token.service';
 import { ConfigType } from '@nestjs/config';
 import { TaskUserRepository } from './../task-user/task-user.repository';
@@ -7,7 +9,7 @@ import { AUTH_USER_EXISTS, AUTH_USER_NOT_FOUND, AUTH_USER_PASSWORD_WRONG } from 
 import { Injectable, Inject, ConflictException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDTO } from './dto/create-user.dto';
 import dayjs from 'dayjs';
-import { User, UserRole } from '@project/shared/app-types';
+import { User } from '@project/shared/app-types';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConfig } from '@project/config/config-users';
 import { createJWTPayload } from '@project/util/util-core';
@@ -24,11 +26,11 @@ export class AuthService {
   ) {}
 
   public async register(dto: CreateUserDTO) {
-    const { name, email, city, password, dateOfBirth  } = dto;
+    const { name, email, city, password, dateOfBirth, role, personalInfo  } = dto;
 
     const taskUser = {
-      name, email, city, role: UserRole.Customer, avatar: '',
-      dateOfBirth:dayjs(dateOfBirth).toDate(), passwordHash: ''
+      name, email, city, role, avatar: '',
+      dateOfBirth:dayjs(dateOfBirth).toDate(), passwordHash: '', personalInfo
     }
 
     const existUser = await this.taskUserRepository.findByEmail(email);
@@ -74,5 +76,29 @@ export class AuthService {
         expiresIn: this.JwtOptions.refreshTokenExpiresIn
       }),
     }
+  }
+
+  public async changePassword(_id: string, dto: ChangeUserPasswordDto) {
+    const { email, currentPassword, newPassword } = dto;
+
+    const user = await this.verifyUser({ email: email, password: currentPassword });
+    const userEntity = await new TaskUserEntity(user).setPassword(newPassword);
+
+    return this.taskUserRepository.update(user._id, userEntity);
+  }
+
+  public async updateUser(id: string, dto: UpdateUserDTO) {
+    const existUser = await this.taskUserRepository.findById(id);
+
+    if(!existUser) {
+      throw new NotFoundException(AUTH_USER_NOT_FOUND);
+    }
+
+    const userEntity = new TaskUserEntity({ ...existUser, ...dto });
+    return await this.taskUserRepository.update(id, userEntity);
+  }
+
+  public async getUsers(ids: string[]) {
+    return this.taskUserRepository.findAll(ids);
   }
 }

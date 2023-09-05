@@ -14,6 +14,7 @@ import { JwtService } from '@nestjs/jwt';
 import { jwtConfig } from '@project/config/config-users';
 import { createJWTPayload } from '@project/util/util-core';
 import * as crypto from 'node:crypto';
+import { userAge } from '@project/util/util-core';
 
 @Injectable()
 export class AuthService {
@@ -30,7 +31,8 @@ export class AuthService {
 
     const taskUser = {
       name, email, city, role, avatar: '',
-      dateOfBirth:dayjs(dateOfBirth).toDate(), passwordHash: '', personalInfo
+      dateOfBirth:dayjs(dateOfBirth).toDate(), passwordHash: '', personalInfo,
+      age: userAge(dateOfBirth.toString())
     }
 
     const existUser = await this.taskUserRepository.findByEmail(email);

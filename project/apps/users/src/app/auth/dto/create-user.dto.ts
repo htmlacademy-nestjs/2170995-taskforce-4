@@ -64,4 +64,11 @@ export class CreateUserDTO {
   })
   @MaxLength(300, { message: 'Max length is 300 symbols' })
   public personalInfo?: string;
+
+  @ApiProperty({
+    description: 'Information about yourself',
+    example: 'Плачу во время',
+  })
+
+  public age?: number;
 }

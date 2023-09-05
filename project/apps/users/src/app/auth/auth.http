@@ -14,10 +14,10 @@ Content-Type: {{contentType}}
 
 {
   "name": "bob",
-  "email": "customer@mail.ru",
+  "email": "executor@mail.ru",
   "city": "Москва",
   "password": "qwerty",
-  "role": "customer",
+  "role": "executor",
   "avatar": "https://images/avatarka.jpeg",
   "dateOfBirth": "1991-01-01",
   "personalInfo": "Плачу много"

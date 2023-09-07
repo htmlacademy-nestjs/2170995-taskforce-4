@@ -1,3 +1,4 @@
+import { SetMetadata } from "@nestjs/common";
 import { SortType } from '@project/shared/app-types';
 import { UserRole } from '@project/shared/app-types';
 import { TaskStatus } from '@project/shared/app-types';
@@ -25,6 +26,9 @@ export const TASK_EXECUTOR_APPOINTED = `The executor has been already appointed.
 export const TASK_EXECUTOR_A_HAS_JOB = `The executor already has a job.`;
 export const RESPONSE_NOT_FOUND = 'Response is not found';
 export const TASK_UPDATE_VALID = 'A user with this role cannot assign this status';
+
+export const ROLES_KEY = 'roles';
+export const Roles = (...roles: UserRole[]) => SetMetadata(ROLES_KEY, roles);
 
 
 

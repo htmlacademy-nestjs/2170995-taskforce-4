@@ -1,6 +1,7 @@
+import { uniqTagArray } from '@project/util/util-core';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
-import { RESPONSE_NOT_FOUND, TAGS_MAX_COUNT, TASK_CANT_TAKE, TASK_EXECUTOR_APPOINTED, TASK_EXECUTOR_A_HAS_JOB, TASK_EXECUTOR_EXISTS, TASK_NOT_FOUND, TASK_STATUS_CONDITIONS_WRONG } from './task.constant';
+import { RESPONSE_NOT_FOUND, TASK_CANT_TAKE, TASK_EXECUTOR_APPOINTED, TASK_EXECUTOR_A_HAS_JOB, TASK_EXECUTOR_EXISTS, TASK_NOT_FOUND, TASK_STATUS_CONDITIONS_WRONG } from './task.constant';
 import { TaskResponseService } from './../task-response/task-response.service';
 import { TaskTagService } from './../task-tag/task-tag.service';
 import { TaskCategoryService } from './../task-category/task-category.service';
@@ -24,7 +25,7 @@ export class TaskService {
 
   async createTask(dto: CreateTaskDto): Promise<Task> {
     const category = await this.taskCategoryService.findOrCreateCategory(dto.category);
-    const tagsArray = Array.from(new Set(dto.tags)).slice(0, TAGS_MAX_COUNT);
+    const tagsArray = uniqTagArray(dto.tags)
     const tags = await this.taskTagService.findOrCreateMany(tagsArray);
 
     const taskEntity = new TaskEntity({

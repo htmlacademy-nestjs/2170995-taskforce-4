@@ -1,7 +1,7 @@
-import { TASK_STATUS_NOT_VALID } from './../task.constant';
+import { TAGS_MAX_COUNT, TASK_STATUS_NOT_VALID } from './../task.constant';
 import { ApiProperty } from '@nestjs/swagger';
 import { City, TaskStatus } from '@project/shared/app-types';
-import { IsDate, IsEnum, IsNumber, IsOptional, IsPositive, IsString, Length, Min, MinDate } from 'class-validator';
+import { ArrayMaxSize, IsArray, IsDate, IsEnum, IsNumber, IsOptional, IsPositive, IsString, Length, Min, MinDate } from 'class-validator';
 import { TASK_CITY_NOT_VALID } from '../task.constant';
 import { Transform } from 'class-transformer';
 
@@ -70,6 +70,10 @@ export class CreateTaskDto {
     example: 'fix, tobreak, takeoutthetrash'
   })
   @IsOptional()
+  // @Transform(({ value }) => value.map((tag) => tag.substring(0, 4).match(/^[A-Za-z]/)))
+  @IsArray()
+  @ArrayMaxSize(TAGS_MAX_COUNT)
+  @Length(3, 10, { each: true, message: 'Min tag length is 3, max is 10' })
   public tags?: string[];
 
   @ApiProperty({

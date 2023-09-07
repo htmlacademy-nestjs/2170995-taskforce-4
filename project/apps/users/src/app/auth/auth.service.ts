@@ -14,7 +14,7 @@ import { JwtService } from '@nestjs/jwt';
 import { jwtConfig } from '@project/config/config-users';
 import { createJWTPayload } from '@project/util/util-core';
 import * as crypto from 'node:crypto';
-import { userAge } from '@project/util/util-core';
+import { userAge, uniqArray } from '@project/util/util-core';
 
 @Injectable()
 export class AuthService {
@@ -27,12 +27,12 @@ export class AuthService {
   ) {}
 
   public async register(dto: CreateUserDTO) {
-    const { name, email, city, password, dateOfBirth, role, personalInfo  } = dto;
+    const { name, email, city, password, dateOfBirth, role, personalInfo, specialization  } = dto;
 
     const taskUser = {
       name, email, city, role, avatar: '',
       dateOfBirth:dayjs(dateOfBirth).toDate(), passwordHash: '', personalInfo,
-      age: userAge(dateOfBirth.toString())
+      age: userAge(dateOfBirth.toString()), specialization: uniqArray(specialization)
     }
 
     const existUser = await this.taskUserRepository.findByEmail(email);

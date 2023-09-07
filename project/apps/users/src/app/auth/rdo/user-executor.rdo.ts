@@ -65,7 +65,7 @@ export class UserExecutorRdo {
     example: '1'
   })
   @Expose()
-  public filedTasks: number;
+  public failedTasks: number;
 
   @ApiProperty({
     description: 'User email',

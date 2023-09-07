@@ -23,7 +23,7 @@ export class TaskUserExecutorModel extends Document implements UserExecutor {
   @Prop({
     default: 0,
   })
-  public filedTasks?: number;
+  public failedTasks?: number;
 
   @Prop({
     default: '',
@@ -34,6 +34,11 @@ export class TaskUserExecutorModel extends Document implements UserExecutor {
     default: 0,
   })
   public placeInRating?: number;
+
+  @Prop({
+    default: '',
+  })
+  public personalInfo?: string;
 
 }
 

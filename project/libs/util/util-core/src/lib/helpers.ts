@@ -1,4 +1,5 @@
 import {plainToInstance, ClassConstructor} from 'class-transformer';
+import { BadRequestException } from '@nestjs/common';
 
 export type DateTimeUnit = 's' | 'h' | 'd' | 'm' | 'y';
 export type TimeAndUnit = { value: number, unit: DateTimeUnit };
@@ -37,3 +38,18 @@ export function parseTime(time: string): TimeAndUnit {
 export function userAge(date: string): number {
   return ((new Date().getTime() - new Date(date).getTime()) / (24 * 3600 * 365 * 1000)) | 0;
 }
+
+export function uniqArray(array: string[]) {
+  return [...new Set(array)]
+}
+
+export function uniqTagArray(array: string[]) {
+  return [...new Set(array)].map((item) => {
+    if (item.substring(0, 1).match(/^[A-Za-zа-яёА-ЯЁ]/)) {
+      return item.replace(/\s+/g,'').toLowerCase()
+    } else {
+      throw new BadRequestException('The tag must start with a letter.')
+    }
+  })
+}
+

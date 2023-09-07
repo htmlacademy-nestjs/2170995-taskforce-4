@@ -1,14 +1,18 @@
+// import { RolesGuard } from './../auth/guards/role.guard';
+import { UserRole } from '@project/shared/app-types';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskRdo } from './rdo/task.rdo';
 import { TaskService } from './task.service';
 import { ApiResponse } from '@nestjs/swagger/dist';
 import { ApiTags } from '@nestjs/swagger';
 import { fillObject } from '@project/util/util-core';
-import { Body, Post, Get, Param, Controller, Delete, HttpStatus, HttpCode, Patch, Query } from '@nestjs/common';
+import { Body, Post, Get, Param, Controller, Delete, HttpStatus, HttpCode, Patch, Query, UseGuards } from '@nestjs/common';
 import { TaskQuery } from './query/task.query';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { UpdateTaskResponseDto } from './dto/update-task-response.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Roles } from './decorators/user-role.decorator';
 @ApiTags('tasks')
 @Controller('tasks')
 export class TaskController {
@@ -43,7 +47,13 @@ export class TaskController {
     status: HttpStatus.CREATED,
     description: 'The new task has been successfully created'
   })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'User does not have enough rights to add a task'
+  })
   @Post('/')
+  @Roles(UserRole.Customer)
+  @UseGuards(JwtAuthGuard, /*RolesGuard*/)
   async create(@Body() dto: CreateTaskDto) {
     const newTask = await this.taskService.createTask(dto);
     return fillObject(TaskRdo, newTask);
@@ -54,6 +64,8 @@ export class TaskController {
     description: 'The task has been successfully deleted'
   })
   @Delete('/:id')
+  @UseGuards(JwtAuthGuard, /*RolesGuard*/)
+  @Roles(UserRole.Customer)
   @HttpCode(HttpStatus.NO_CONTENT)
   async destroy(@Param('id') id: number) {
     this.taskService.deleteTask(id);
@@ -156,6 +168,8 @@ export class TaskController {
     description: 'The task has been successfully updated.'
   })
   @Patch('update/:id')
+  @UseGuards(JwtAuthGuard, /*RolesGuard*/)
+  @Roles(UserRole.Customer)
   public async update(@Body() dto: UpdateTaskDto, @Param('id') id: number) {
     const task = await this.taskService.update(id, dto);
     return fillObject(TaskRdo, task);

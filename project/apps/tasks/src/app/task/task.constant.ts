@@ -26,6 +26,8 @@ export const TASK_EXECUTOR_A_HAS_JOB = `The executor already has a job.`;
 export const RESPONSE_NOT_FOUND = 'Response is not found';
 export const TASK_UPDATE_VALID = 'A user with this role cannot assign this status';
 
+export const ROLES_KEY = 'roles';
+
 
 
 

@@ -12,9 +12,9 @@ import { RequestIdInterceptor } from './app/interseptors/request-id.interceptor'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api';
+  const port = process.env.PORT || 4000;
   app.setGlobalPrefix(globalPrefix);
   app.useGlobalInterceptors(new RequestIdInterceptor());
-  const port = process.env.PORT || 4000;
   await app.listen(port);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`

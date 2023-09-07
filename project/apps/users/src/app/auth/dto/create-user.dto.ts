@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger/dist';
 import { City, UserRole } from '@project/shared/app-types';
 import { Transform } from 'class-transformer';
-import { IsEmail, IsString, IsEnum, Length, MaxDate, MaxLength } from 'class-validator';
+import { IsEmail, IsString, IsEnum, Length, MaxDate, MaxLength, IsArray, ArrayMaxSize } from 'class-validator';
 import dayjs from 'dayjs';
 import { AUTH_USER_EMAIL_NOT_VALID, AUTH_USER_CITY_NOT_VALID, AUTH_USER_ROLE_NOT_VALID, AUTH_MIN_USER_AGE, AUTH_USER_NOT_VALID_MIN_AGE } from '../auth.constant';
 
@@ -66,9 +66,10 @@ export class CreateUserDTO {
   public personalInfo?: string;
 
   @ApiProperty({
-    description: 'Information about yourself',
-    example: 'Плачу во время',
+    description: 'Specializations of the executor',
+    example: 'The Bricklayer'
   })
-
-  public age?: number;
+  @IsArray()
+  @ArrayMaxSize(5)
+  public specialization?: string[]
 }

@@ -1,8 +1,9 @@
+import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
 import { HttpStatusCode } from 'axios';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CommentRdo } from './rdo/comment.rdo';
 import { TaskCommentService } from './task-comments.service';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { fillObject } from '@project/util/util-core';
 import { CommentQuery } from './query/comment.query';
@@ -21,6 +22,7 @@ export class CommentController {
   })
   @HttpCode(HttpStatusCode.Created)
   @Post('create')
+  @UseGuards(JwtAuthGuard)
   public async create(@Body() dto: CreateCommentDto) {
     const newComment = await this.taskCommentService.create(dto);
 

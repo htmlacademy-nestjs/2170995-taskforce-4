@@ -1,6 +1,6 @@
 # Users
 @hostname = http://localhost
-@port = 3001
+@port = 3000
 @host = {{hostname}}:{{port}}
 @parentPath = api/auth
 @userId = 64f8b4dc72d5502a44680895
@@ -14,10 +14,10 @@ Content-Type: {{contentType}}
 
 {
   "name": "bob",
-  "email": "e@mail.ru",
+  "email": "cus@mail.ru",
   "city": "Москва",
-  "password": "qwerty",
-  "role": "executor",
+  "password": "123456",
+  "role": "customer",
   "avatar": "https://images/avatarka.jpeg",
   "dateOfBirth": "1995-01-01",
   "personalInfo": "Плачу много",
@@ -37,8 +37,8 @@ POST {{host}}/{{parentPath}}/login HTTP/1.1
 Content-Type: {{contentType}}
 
 {
-  "email": "executor@mail.ru",
-  "password": "qwerty"
+  "email": "cus@mail.ru",
+  "password": "123456"
 }
 
 ###

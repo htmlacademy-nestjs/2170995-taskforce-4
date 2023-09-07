@@ -8,11 +8,13 @@
 @deleteTaskId = 3
 @userId = 20
 @executorId = 13
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGZhMWE4ODJkZDc0MWU4Mjk1YjBkMDciLCJlbWFpbCI6ImN1c0BtYWlsLnJ1Iiwicm9sZSI6ImN1c3RvbWVyIiwibmFtZSI6ImJvYiIsImlhdCI6MTY5NDExNzQ4MSwiZXhwIjoxNjk0Mzc2NjgxfQ.OtXKYZfASETRQ4VNog38fBfCy89oWQS2UoLofLD2HIk
 @contentType = application/json
 
 # Create a new task
 POST {{host}}/{{parentPath}}/ HTTP/1.1
 Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
 
 {
   "title": "Новаое задание Новаое задание Новаое задание",
@@ -24,8 +26,8 @@ Content-Type: {{contentType}}
   "tags": ["Ремонт", "jhf fds", "fd32", "ремонт"],
   "city": "Москва",
   "category": "Доставка",
-  "status": "Completed",
-  "userId": "20"
+  "status": "New",
+  "userId": "64fa1a882dd741e8295b0d07"
 }
 
 ###
@@ -38,6 +40,7 @@ GET {{host}}/{{parentPath}}/{{taskId}} HTTP/1.1
 # Delete task by id
 DELETE  {{host}}/{{parentPath}}/{{deleteTaskId}} HTTP/1.1
 Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
 
 ###
 
@@ -54,6 +57,7 @@ GET {{host}}/{{filtresPath}} HTTP/1.1
 # Update task
 PATCH {{host}}/{{parentPath}}/update/{{taskId}} HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
   "price": 1
